@@ -1,14 +1,16 @@
 "use client"
-
 import Head from "next/head";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { doLogin } from "./services/Web3Service";
 
 export default function Home() {
-
+  const [message, setMessage] = useState("");
   const { push } = useRouter();
 
   function btnLoginClick() {
-    push("/bet");
+    setMessage("Conectando conta MetaMask");
+    doLogin().then(account => push("/bet")).catch(e => setMessage(e.message));
   }
 
   return (
@@ -33,7 +35,7 @@ export default function Home() {
                 Conectar MetaMask
               </button>
             </div>
-            <p className="message"></p>
+            <p className="message">{message}</p>
           </div>
         </div>
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
